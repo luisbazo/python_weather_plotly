@@ -15,6 +15,8 @@ The project is composed with 2 files
                     -o OFFSET, --offset=OFFSET how fast in seconds weather has to be retrieved
                     -a API, --api=API     api key to get access to openweather
 
+Once executed the map is automatically displayed in the default web browser. An example of execution could be found at: https://plot.ly/~luis.bazo/6/temperature-map-hover-for-city-names-and-temperatures/
+
 2. cities.csv: CSV file with the list of cities to retrieve weather data from
 
 Example:
