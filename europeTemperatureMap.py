@@ -7,11 +7,9 @@ from optparse import OptionParser
 from geopy.geocoders import Nominatim
 
 parser = OptionParser()
-parser.add_option("-o", "--offset", dest="offset", help="how fast in seconds weather has to be retrieved")
 parser.add_option("-a", "--api", dest="api",help="api key to get access to openweather")
 
 (opts, args) = parser.parse_args()
-offset=float(opts.offset)
 api=opts.api
 
 geolocator = Nominatim()
@@ -24,25 +22,22 @@ for index, row in df.iterrows():
   loc_city = df.loc[index,"city"] + "," + df.loc[index,"country"]
 
   iterate = True
-  while (iterate):
+  counter = 0
+  while (iterate and counter < 5):
       try:
-          global location,w,observation
           location = geolocator.geocode(df.loc[index,"city"])
           observation = owm.weather_at_coords(location.latitude,location.longitude)
           w = observation.get_weather()
+          jsonweather = w.to_JSON()
+          jsonloads = json.loads(jsonweather)
+          df.loc[index, "temp"] = jsonloads["temperature"]["temp"] - 273.15
+          df.loc[index, "long"] = location.longitude
+          df.loc[index, "lat"] = location.latitude
+          df.loc[index, "text"] = loc_city + ' Temperature ' + str(df.loc[index, "temp"])
           iterate = False
       except:
           iterate = True
-  #Add city to JSON weather
-  jsonweather = w.to_JSON()
-  jsonloads = json.loads(jsonweather)
-
-  df.loc[index, "temp"] = jsonloads["temperature"]["temp"] - 273.15
-  df.loc[index, "long"] = location.longitude
-  df.loc[index, "lat"] = location.latitude
-  df.loc[index, "text"] = loc_city + ' Temperature ' + str(df.loc[index, "temp"])
-
-  time.sleep(offset)
+          counter = counter + 1
 
 
 scl = [ [0,"rgb(5, 10, 172)"],[0.35,"rgb(40, 60, 190)"],[0.5,"rgb(70, 100, 245)"],\
