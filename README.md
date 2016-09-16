@@ -1,5 +1,5 @@
 # python_weather_plotly
-This is an example of python program that reads a list of european cities from a csv file and it plots temperature data in a map
+This is an example of python program that reads a list of european cities from a csv file and it plots temperature data in a map using plotly library
 
 The project is composed with 2 files
 
@@ -7,12 +7,11 @@ The project is composed with 2 files
 
   python europeanTemperatureMap.py -o 1 -a xxxxxxxxxxxxx
 
-  Usage: getCityWeather.py [options]
+  Usage: europeanTemperatureMap.py [options]
 
   Options:
 
                     -h, --help            show this help message and exit
-                    -o OFFSET, --offset=OFFSET how fast in seconds weather has to be retrieved
                     -a API, --api=API     api key to get access to openweather
 
 Once executed the map is automatically displayed in the default web browser. An example of execution could be found at: https://plot.ly/~luis.bazo/6/temperature-map-hover-for-city-names-and-temperatures/

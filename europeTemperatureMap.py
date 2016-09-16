@@ -22,13 +22,21 @@ df.head()
 
 for index, row in df.iterrows():
   loc_city = df.loc[index,"city"] + "," + df.loc[index,"country"]
-  location = geolocator.geocode(df.loc[index,"city"])
-  observation = owm.weather_at_coords(location.latitude,location.longitude)
-  w = observation.get_weather()
+
+  iterate = True
+  while (iterate):
+      try:
+          global location,w,observation
+          location = geolocator.geocode(df.loc[index,"city"])
+          observation = owm.weather_at_coords(location.latitude,location.longitude)
+          w = observation.get_weather()
+          iterate = False
+      except:
+          iterate = True
   #Add city to JSON weather
   jsonweather = w.to_JSON()
   jsonloads = json.loads(jsonweather)
-  
+
   df.loc[index, "temp"] = jsonloads["temperature"]["temp"] - 273.15
   df.loc[index, "long"] = location.longitude
   df.loc[index, "lat"] = location.latitude
